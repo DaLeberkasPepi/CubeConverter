@@ -5,7 +5,7 @@ SetWorkingDir %A_ScriptDir%
 CoordMode, Mouse, Client
 global D3ScreenResolution
 , ScreenMode
-		dsf
+
 ^5::
 	global ItemSize := 1
 	KanaisCube()
@@ -21,7 +21,6 @@ MsgBox, Ctrl+5 uses 1-slot items in the cube.`nCtrl+6 uses 2-slot items in the c
 
 KanaisCube()
 {
-	Test
 	WinGetPos, , , DiabloWidth, DiabloHeight, Diablo III
 	If (D3ScreenResolution != DiabloWidth*DiabloHeight)
 	{
