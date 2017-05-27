@@ -5,7 +5,7 @@ SetWorkingDir %A_ScriptDir%
 CoordMode, Mouse, Client
 global D3ScreenResolution
 , ScreenMode
-		
+		dsf
 ^5::
 	global ItemSize := 1
 	KanaisCube()
@@ -21,6 +21,7 @@ MsgBox, Ctrl+5 uses 1-slot items in the cube.`nCtrl+6 uses 2-slot items in the c
 
 KanaisCube()
 {
+	Test
 	WinGetPos, , , DiabloWidth, DiabloHeight, Diablo III
 	If (D3ScreenResolution != DiabloWidth*DiabloHeight)
 	{
@@ -36,7 +37,7 @@ KanaisCube()
 		, Rows := 6
 		, SlotX
 		, SlotY
-		
+
 		;convert coordinates for the used resolution of Diablo III
 		ScreenMode := isWindowFullScreen("Diablo III")
 		ConvertCoordinates(Fill)
@@ -44,7 +45,7 @@ KanaisCube()
 		ConvertCoordinates(TopLeftInv)
 		ConvertCoordinates(InvSize)
 		ConvertCoordinates(SwitchPages)
-		
+
 		;calculate all other needed coordinates of the base coordinates that where converted into the used Diablo III resolution
 		SlotX	:= Round(InvSize[1]/Columns)
 		SlotY := Round(InvSize[2]/Rows)
@@ -53,7 +54,7 @@ KanaisCube()
 		SwitchPagesLeft := [Fill[1]-SwitchPages[1], Fill[2]]
 		SwitchPagesRight := [Fill[1]+SwitchPages[1], Fill[2]]
 	}
-	
+
 	Loop
 	{
 		RowCount := (Floor((A_Index-1)/Columns))*ItemSize
@@ -75,39 +76,39 @@ KanaisCube()
 	}	Until A_Index>=Columns*Rows/ItemSize or GetKeyState("U","P")
 }
 
-	
+
 ConvertCoordinates(ByRef Array)
 {
 	WinGetPos, , , DiabloWidth, DiabloHeight, Diablo III
 	D3ScreenResolution := DiabloWidth*DiabloHeight
- 	
+
  	If (ScreenMode == false)
  	{
 		DiabloWidth := DiabloWidth-16
 		DiabloHeight := DiabloHeight-39
 	}
-	
+
 	Position := Array[3]
-	
+
 	;Pixel is always relative to the middle of the Diablo III window
-  If (Position == 1)							
+  If (Position == 1)
   	Array[1] := Round(Array[1]*DiabloHeight/1440+(DiabloWidth-3440*DiabloHeight/1440)/2, 0)
-  
+
   ;Pixel is always relative to the left side of the Diablo III window or just relative to the Diablo III windowheight
-  If Else (Position == 2 || Position == 4)		
+  If Else (Position == 2 || Position == 4)
 		Array[1] := Round(Array[1]*(DiabloHeight/1440), 0)
-	
+
 	;Pixel is always relative to the right side of the Diablo III window
-	If Else (Position == 3)				
+	If Else (Position == 3)
 		Array[1] := Round(DiabloWidth-(3440-Array[1])*DiabloHeight/1440, 0)
-  		
+
 	Array[2] := Round(Array[2]*(DiabloHeight/1440), 0)
 }
 
 isWindowFullScreen(WinID)
 {
    ;checks if the specified window is full screen
-	
+
 	winID := WinExist( winTitle )
 	Tooltip, WinID %WinID% winTitle %winTitle%, 100, 400, 4
 	If ( !winID )
