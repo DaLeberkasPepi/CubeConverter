@@ -54,12 +54,27 @@ KanaisCube()
 		SwitchPagesRight := [Fill[1]+SwitchPages[1], Fill[2]]
 	}
 
+	ColumnCount := 1
+	RowCount := -1
+
 	Loop
 	{
-		RowCount := (Floor((A_Index-1)/Columns))*ItemSize
-		StringRight, ColumnCount, A_Index, 1
-		If (ColumnCount == 0)
-			ColumnCount := 10
+		If (ItemSize == 2)
+		{
+			RowCount := (Floor((A_Index-1)/Columns))*ItemSize
+			StringRight, ColumnCount, A_Index, 1
+			If (ColumnCount == 0)
+				ColumnCount := 10
+		}
+		Else
+		{
+			If (RowCount > 4)
+			{
+				RowCount := -1
+				++ColumnCount
+			}
+			++RowCount
+		}
 		XClick := TopLeftInv[1]+SlotX*(ColumnCount)
 		YClick := TopLeftInv[2]+SlotY*(RowCount)
 		MouseClick, right, XClick, YClick
@@ -109,7 +124,6 @@ isWindowFullScreen(WinID)
    ;checks if the specified window is full screen
 
 	winID := WinExist( winTitle )
-	Tooltip, WinID %WinID% winTitle %winTitle%, 100, 400, 4
 	If ( !winID )
 		Return false
 
