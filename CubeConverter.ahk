@@ -53,28 +53,30 @@ KanaisCube()
 		SwitchPagesLeft := [Fill[1]-SwitchPages[1], Fill[2]]
 		SwitchPagesRight := [Fill[1]+SwitchPages[1], Fill[2]]
 	}
-
-	ColumnCount := 0
-	RowCount := 0
-
+	
+	If (ColumnCount > Columns-1 and RowCount > Rows-1)
+	{
+		ColumnCount := 0
+		RowCount := 0
+	}
+	
 	Loop
 	{
 		If (ItemSize == 2)
 		{
-			If (ColumnCount > 9)
+			If (ColumnCount > Columns-1)
 			{
 				ColumnCount := 0
-				++RowCount
-				++RowCount
+				RowCount := RowCount + ItemSize
 			}
 			++ColumnCount
 		}
 		Else
 		{
-			If (RowCount > 5)
+			If (RowCount > Rows-1)
 			{
 				RowCount := 0
-				++ColumnCount
+				ColumnCount := ColumnCount + ItemSize
 			}
 			++RowCount
 		}
