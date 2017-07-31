@@ -5,6 +5,10 @@ SetWorkingDir %A_ScriptDir%
 CoordMode, Mouse, Client
 global D3ScreenResolution
 , ScreenMode
+, ColumnCount := 0
+, RowCount := 0
+, CurrentMode
+, Cycles := 0
 
 ^5::
 	global ItemSize := 1
@@ -54,35 +58,50 @@ KanaisCube()
 		SwitchPagesRight := [Fill[1]+SwitchPages[1], Fill[2]]
 	}
 	
-	If (ColumnCount > Columns-1 and RowCount > Rows-1)
+	If (ColumnCount == 9) && (RowCount >= 6)
 	{
 		ColumnCount := 0
 		RowCount := 0
+		Cycles := 0
+	}
+	If (ColumnCount >= 10) && (RowCount == 4)
+	{
+		ColumnCount := 0
+		RowCount := 0
+		Cycles := 0
+	}
+	If (CurrentMode != "") && (CurrentMode != ItemSize)
+	{
+		ColumnCount := 0
+		RowCount := 0
+		Cycles := 0
 	}
 	
 	Loop
 	{
+		++Cycles
+		CurrentMode := ItemSize
+		XClick := TopLeftInv[1]+SlotX*(ColumnCount)
+		YClick := TopLeftInv[2]+SlotY*(RowCount)
+		MouseClick, right, XClick, YClick
 		If (ItemSize == 2)
 		{
-			If (ColumnCount > Columns-1)
+			ColumnCount++
+ 			If (ColumnCount > 9) && (RowCount < 4)
 			{
 				ColumnCount := 0
 				RowCount := RowCount + ItemSize
 			}
-			++ColumnCount
 		}
 		Else
 		{
-			If (RowCount > Rows-1)
+			RowCount++
+			If (RowCount > 5) && (ColumnCount < 9)
 			{
 				RowCount := 0
 				ColumnCount := ColumnCount + ItemSize
 			}
-			++RowCount
 		}
-		XClick := TopLeftInv[1]+SlotX*(ColumnCount)
-		YClick := TopLeftInv[2]+SlotY*(RowCount)
-		MouseClick, right, XClick, YClick
 		Sleep, 50
 		MouseClick, left, Fill[1], Fill[2]
 		Sleep, 50
@@ -92,7 +111,7 @@ KanaisCube()
 		Sleep, 50
 		MouseClick, left, SwitchPagesLeft[1], SwitchPagesLeft[2]
 		Sleep, 50
-	}	Until A_Index>=Columns*Rows/ItemSize or GetKeyState("U","P")
+	}	Until Cycles>=Columns*Rows/ItemSize or GetKeyState("U","P")
 }
 
 
