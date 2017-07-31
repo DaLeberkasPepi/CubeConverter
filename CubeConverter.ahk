@@ -46,31 +46,34 @@ KanaisCube()
 		ConvertCoordinates(SwitchPages)
 
 		;calculate all other needed coordinates of the base coordinates that where converted into the used Diablo III resolution
-		SlotX	:= Round(InvSize[1]/Columns)
+		SlotX := Round(InvSize[1]/Columns)
 		SlotY := Round(InvSize[2]/Rows)
-		TopLeftInv[1] := TopLeftInv[1]-SlotX/2
+		TopLeftInv[1] := TopLeftInv[1]+SlotX/2
 		TopLeftInv[2] := TopLeftInv[2]+SlotY/2
 		SwitchPagesLeft := [Fill[1]-SwitchPages[1], Fill[2]]
 		SwitchPagesRight := [Fill[1]+SwitchPages[1], Fill[2]]
 	}
 
-	ColumnCount := 1
-	RowCount := -1
+	ColumnCount := 0
+	RowCount := 0
 
 	Loop
 	{
 		If (ItemSize == 2)
 		{
-			RowCount := (Floor((A_Index-1)/Columns))*ItemSize
-			StringRight, ColumnCount, A_Index, 1
-			If (ColumnCount == 0)
-				ColumnCount := 10
+			If (ColumnCount > 9)
+			{
+				ColumnCount := 0
+				++RowCount
+				++RowCount
+			}
+			++ColumnCount
 		}
 		Else
 		{
-			If (RowCount > 4)
+			If (RowCount > 5)
 			{
-				RowCount := -1
+				RowCount := 0
 				++ColumnCount
 			}
 			++RowCount
