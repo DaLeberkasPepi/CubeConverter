@@ -1,4 +1,4 @@
-# CubeConverter v1.1.2.0 (31.07.2017)
+# CubeConverter
 A while back i created a AHK-Script for the newly introduced fill functionality that came with the change of crafting materials tab.
 The usage of this script is pretty straigt forward:
 
