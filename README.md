@@ -8,3 +8,5 @@ The usage of this script is pretty straigt forward:
 3. Press CTRL + 5 for 1 slot items or CTRL + 6 for 2 slot items. Press and Hold U if you want to cancel the convert process. Press F1 if you forget the information.
 
 Thats basically all there is to it. No need to configure the script for your screen resolution it just works out of the box.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/DaLeberkasPepi)
