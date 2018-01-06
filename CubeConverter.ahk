@@ -15,10 +15,19 @@ global D3ScreenResolution
 ,NativeDiabloHeight := 1440
 ,NativeDiabloWidth := 3440
 ,#ctrls = 3
-,Globalsleep
+
+IfNotExist, Hotkeys.ini
+	FileAppend,
+(
+[Settings]
+Globalsleep=50
+[Hotkeys]
+1=^5
+2=^6
+3=^7
+), Hotkeys.ini
 
 IniRead, Globalsleep, Hotkeys.ini, Settings, Globalsleep, 50
-
 Loop,% #ctrls 
 {
 	If (A_Index == 1)
@@ -43,22 +52,21 @@ Loop,% #ctrls
 GUI, Add, Text, xm, [ms] for Globalsleep:
 GUI, Add, Edit, x+5 w35 vGlobalsleep, %Globalsleep%
 GUI, Submit
+IniWrite, %Globalsleep%, Hotkeys.ini, Settings, Globalsleep
 Return
 
 F1::
 	GUI, Show,,CubeConverter Hotkeys
 Return
 
-GuiEscape:
 GuiClose:
-ButtonCancel:
 	GUIControlGet, Globalsleep
 	IniWrite, %Globalsleep%, Hotkeys.ini, Settings, Globalsleep
-	GUI Destroy
+	GUI, Hide
 Return
 
-ESC::
-	Reload
+ESC::Reload
+Return
 
 Label1:		;Hotkey for 1 Slot Items
 	IfWinNotActive, CubeConverter Hotkeys
@@ -123,20 +131,10 @@ KanaisCube(Setting)
 		SwitchPagesLeft := [Fill[1]-SwitchPages[1], Fill[2]]
 		SwitchPagesRight := [Fill[1]+SwitchPages[1], Fill[2]]
 	}
-	
-	;If (ColumnCount == 9) && (RowCount >= 6)
-	;{
-		ColumnCount := 0
-		RowCount := 0
-		Cycles := 0
-	;}
-	;
-	;If (ColumnCount >= 10) && (RowCount == 4)
-	;{
-	;	ColumnCount := 0
-	;	RowCount := 0
-	;	Cycles := 0
-	;}
+
+	ColumnCount := 0
+	RowCount := 0
+	Cycles := 0
 	
 	If (Setting == "Blacksmith")
 		MouseClick, left, Salvage[1], Salvage[2]
@@ -152,7 +150,8 @@ KanaisCube(Setting)
 		
 		If (Setting == "Blacksmith")
 		{
-			Sleep % Globalsleep
+			global AdjustedSleep := Max(Globalsleep - 35, 3)
+			Sleep % AdjustedSleep
 			MouseClick, left, XClick, YClick
 		}
 		
@@ -190,7 +189,8 @@ KanaisCube(Setting)
 		
 		If (Setting == "Blacksmith")
 		{
-			Sleep % Globalsleep
+		
+			Sleep % AdjustedSleep
 			Send, {Enter}
 		}
 	}	Until Cycles>=Columns*Rows/ItemSize
