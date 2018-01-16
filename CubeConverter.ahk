@@ -55,7 +55,7 @@ GUI, Submit
 IniWrite, %Globalsleep%, Hotkeys.ini, Settings, Globalsleep
 Return
 
-F1::
+~F1::
 	GUI, Show,,CubeConverter Hotkeys
 Return
 
@@ -65,7 +65,7 @@ GuiClose:
 	GUI, Hide
 Return
 
-ESC::Reload
+~ESC::Reload
 Return
 
 Label1:		;Hotkey for 1 Slot Items
