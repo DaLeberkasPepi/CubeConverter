@@ -1,23 +1,23 @@
 ﻿;========================================================================
 ;
-; CubeConverter v1.2.1
+; CubeConverter v1.3.0
 ;
 ; provides multiple usefull functions regarding cube item conversion
 ;
 ; Created by DaLeberkasPepi
 ;   https://github.com/DaLeberkasPepi
 ;
-; Last Update: 2018-03-03 24:00 GMT+1
+; Last Update: 2018-04-22 01:40 GMT+1
 ;
 ;========================================================================
 
 #NoEnv
 #IfWinActive, ahk_class D3 Main Window Class
-#SingleInstance Force
+#SingleInstance force
 
 SendMode Input
-SetBatchLines, -1
 SetWorkingDir %A_ScriptDir%
+SetDefaultMouseSpeed, 0
 CoordMode, Pixel, Client
 
 global ColumnCount := 0
@@ -27,10 +27,10 @@ global ColumnCount := 0
 global D3ScreenResolution
 ,NativeDiabloHeight := 1440
 ,NativeDiabloWidth := 3440
-,#ctrls = 3
+,#ctrls = 4
 
 IfNotExist, Hotkeys.ini
-	FileAppend,
+FileAppend,
 (
 [Settings]
 Globalsleep=50
@@ -38,9 +38,10 @@ Globalsleep=50
 1=^5
 2=^6
 3=^7
+4=j
 ), Hotkeys.ini
 
-IniRead, Globalsleep, Hotkeys.ini, Settings, Globalsleep, 50
+IniRead, Globalsleep, Hotkeys.ini, Settings, Globalsleep
 Loop,% #ctrls 
 {
 	If (A_Index == 1)
@@ -51,6 +52,9 @@ Loop,% #ctrls
 	
 	If (A_Index == 3)
 		GUI, Add, Text, xm, Hotkey for Inventoryclear:
+	
+	If (A_Index == 4)
+		GUI, Add, Text, xm, Hotkey for DropItems:
 	
 	IniRead, savedHK%A_Index%, Hotkeys.ini, Hotkeys, %A_Index%, %A_Space%	;Check for saved hotkeys in INI file.
 	
@@ -109,6 +113,15 @@ Label3:		;Hotkey for Inventoryclear
 	}
 Return
 
+Label4:		;Hotkey for DropItems
+	IfWinNotActive, CubeConverter Hotkeys
+	{
+		If (ItemSize == "")
+			global ItemSize := 1
+		KanaisCube("DropItems")
+	}
+Return
+
 KanaisCube(Setting)
 {
 	GUIControlGet, Globalsleep
@@ -155,6 +168,14 @@ KanaisCube(Setting)
 	If (Setting == "Blacksmith")
 		MouseClick, left, Salvage[1], Salvage[2]
 	
+	If (Setting == "DropItems")
+	{
+		XDrop := TopLeftInv[1]-SlotX
+		YDrop := TopLeftInv[2]
+		send {i}
+		MouseGetPos x, y
+	}
+	
 	Loop
 	{
 		++Cycles
@@ -169,6 +190,14 @@ KanaisCube(Setting)
 			global AdjustedSleep := Max(Globalsleep - 35, 3)
 			Sleep % AdjustedSleep
 			MouseClick, left, XClick, YClick
+		}
+		
+		If (Setting == "DropItems") && (ColumnCount != 0)
+		{
+			MouseMove %XClick%, %YClick%
+			send {Lbutton down}
+			MouseMove %XDrop%, %YDrop%
+			send {Lbutton up}
 		}
 		
 		If (ItemSize == 2)
@@ -205,11 +234,16 @@ KanaisCube(Setting)
 		
 		If (Setting == "Blacksmith")
 		{
-		
 			Sleep % AdjustedSleep
 			Send, {Enter}
 		}
 	}	Until Cycles>=Columns*Rows/ItemSize
+	
+	If (Setting == "DropItems")
+	{
+		MouseMove %x%, %y%
+		send {i}
+	}
 }
 
 ConvertCoordinates(ByRef Array)
