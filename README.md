@@ -2,6 +2,8 @@
 A while back i created a AHK-Script for the newly introduced fill functionality that came with the change of crafting materials tab.
 The usage of this script is pretty straigt forward:
 
+**Make sure your Diablo III resolution is set to Windowed or Borderless!!!.**
+
 1. Start the CubeConverter.exe. It should now run in the background. It can be closed by accessing the system tray at the bottom right of your windows taskbar.
 ![alt text](https://i.imgur.com/StDYUzd.jpg)
 2. Select the recipe you want to use (currently working are Upgrade Rare Item and Convert Crafting Materials 
