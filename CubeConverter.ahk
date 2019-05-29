@@ -1,13 +1,13 @@
 ﻿;========================================================================
 ;
-; CubeConverter v1.3.0
+; CubeConverter v1.4.0
 ;
 ; provides multiple usefull functions regarding cube item conversion
 ;
 ; Created by DaLeberkasPepi
 ;   https://github.com/DaLeberkasPepi
 ;
-; Last Update: 2018-04-22 01:40 GMT+1
+; Last Update: 2019-05-29 13:00 GMT+2
 ;
 ;========================================================================
 
@@ -68,9 +68,12 @@ Loop,% #ctrls
 }   
 GUI, Add, Text, xm, [ms] for Globalsleep:
 GUI, Add, Edit, x+5 Limit3 Number gSubmit vGlobalsleep, %Globalsleep%
+
+Menu, Tray, Add  ; Creates a separator line.
+Menu, Tray, Add, CubeConverter Hotkeys, Hotkeys  ; Creates a new menu item.
 Return
 
-~F1::
+Hotkeys:
 	GUI, Show,,CubeConverter Hotkeys
 Return
 
